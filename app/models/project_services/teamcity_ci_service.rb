@@ -12,7 +12,6 @@ class TeamcityCiService < CiService
   validates :subdomain, presence: true, if: :activated?
   validates :api_key, presence: true, if: :activated?
 
-#  STATES = { :success => :success, :failure => :failed, :running => :running }
   # Return complete url to build page
   #
   # Ex.
@@ -21,7 +20,7 @@ class TeamcityCiService < CiService
   def build_page(sha, branch)
     b = find_build_id_by_sha sha, branch
 
-    return "http://error" unless b
+    return 'http://error' unless b
 
     b.webUrl
   end
@@ -40,7 +39,7 @@ class TeamcityCiService < CiService
   #
   #
 
-  def commit_status sha, branch
+  def commit_status(sha, branch)
     convert_state_teamcity_to_gitlab(find_build_id_by_sha(sha, branch))
   end
 
@@ -58,22 +57,25 @@ class TeamcityCiService < CiService
 
   def fields
     [
-      { type: 'text', name: 'project_url', placeholder: 'https://teamcity.example.com'},
-      { type: 'text', name: 'subdomain', placeholder: 'Build Configuration Id'},
-      { type: 'text', name: 'api_key', placeholder: 'teamcity_user:teamcity_password'},
+      { type: 'text', name: 'project_url',
+          placeholder: 'https://teamcity.example.com' },
+      { type: 'text', name: 'subdomain',
+          placeholder: 'Build Configuration Id' },
+      { type: 'text', name: 'api_key',
+          placeholder: 'teamcity_user:teamcity_password' },
     ]
   end
 
-  def execute push_data
+  def execute _push_data
   end
 
   def can_test?
     false
   end
 
-
   private
-  def find_build_id_by_sha sha, branch
+
+  def find_build_id_by_sha(sha, branch)
     if branch
       return my_find_build_id_by_sha(sha, "refs/heads/#{branch}") || my_find_build_id_by_sha(sha, "#{branch}")
     else
@@ -81,10 +83,12 @@ class TeamcityCiService < CiService
     end
   end
 
-  def my_find_build_id_by_sha sha, branch
+  def my_find_build_id_by_sha(sha, branch)
     user, password = api_key.split(':')
-    tc = TeamCity.client(endpoint: "#{project_url}/httpAuth/app/rest", http_user: user, http_password: password)
-    builds = tc.builds(buildType: subdomain, branch: branch, running: 'any', canceled: 'any')
+    tc = TeamCity.client(endpoint: "#{project_url}/httpAuth/app/rest",
+                         http_user: user, http_password: password)
+    builds = tc.builds(buildType: subdomain, branch: branch,
+                       running: 'any', canceled: 'any')
 
     return nil unless builds
 
@@ -97,18 +101,16 @@ class TeamcityCiService < CiService
       end
     end
 
-    return nil
+    nil
   end
 
-  STATES = { 'success' => 'success', 'failure' => 'failed', 'running' => 'running' }
-  def convert_state_teamcity_to_gitlab build_info
+  STATES = { 'success' => 'success',
+             'failure' => 'failed',
+             'running' => 'running' }
 
+  def convert_state_teamcity_to_gitlab(build_info)
     return :pending unless build_info
-
-    return :running if build_info.state == "running"
-
-    puts "build_info.state = #{build_info.state}"
-    puts "STATES.has_key?(build_info.state) = #{STATES.has_key?(build_info.state)}"
+    return :running if build_info.state == 'running'
 
     if build_info.state == 'finished'
       if STATES.has_key?(build_info.status.downcase)
@@ -116,10 +118,8 @@ class TeamcityCiService < CiService
       end
     end
 
-    puts "STATE = FAILED"
+    Gitlab::AppLogger.info "teamcity build_info.state = #{build_info.state} not supported, suppose it failed"
 
     :failed
   end
-
-
 end

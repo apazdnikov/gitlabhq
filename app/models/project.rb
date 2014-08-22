@@ -54,6 +54,7 @@ class Project < ActiveRecord::Base
 
   # Project services
   has_many :services
+  has_one :teamcity_ci_service, dependent: :destroy
   has_one :gitlab_ci_service, dependent: :destroy
   has_one :campfire_service, dependent: :destroy
   has_one :emails_on_push_service, dependent: :destroy
@@ -309,7 +310,7 @@ class Project < ActiveRecord::Base
   end
 
   def available_services_names
-    %w(gitlab_ci campfire hipchat pivotaltracker flowdock assembla emails_on_push gemnasium slack)
+    %w(teamcity_ci gitlab_ci campfire hipchat pivotaltracker flowdock assembla emails_on_push gemnasium slack)
   end
 
   def gitlab_ci?

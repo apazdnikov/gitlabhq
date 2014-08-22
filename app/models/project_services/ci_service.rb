@@ -11,7 +11,7 @@ class CiService < Service
   # Ex.
   #   http://jenkins.example.com:8888/job/test1/scm/bySHA1/12d65c
   #
-  def build_page(sha)
+  def build_page(sha, branch)
     # implement inside child
   end
 
@@ -28,7 +28,7 @@ class CiService < Service
   #   # => 'running'
   #
   #
-  def commit_status(sha)
+  def commit_status(sha, branch)
     # implement inside child
   end
 end

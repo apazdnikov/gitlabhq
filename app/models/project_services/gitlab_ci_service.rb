@@ -35,7 +35,7 @@ class GitlabCiService < CiService
     project_url + "/builds/#{sha}/status.json?token=#{token}"
   end
 
-  def commit_status sha
+  def commit_status sha, branch
     response = HTTParty.get(commit_status_path(sha), verify: false)
 
     if response.code == 200 and response["status"]
@@ -45,7 +45,7 @@ class GitlabCiService < CiService
     end
   end
 
-  def build_page sha
+  def build_page sha, branch
     project_url + "/builds/#{sha}"
   end
 
