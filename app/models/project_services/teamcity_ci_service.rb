@@ -57,16 +57,13 @@ class TeamcityCiService < CiService
 
   def fields
     [
-      { type: 'text', name: 'project_url',
-          placeholder: 'https://teamcity.example.com' },
-      { type: 'text', name: 'subdomain',
-          placeholder: 'Build Configuration Id' },
-      { type: 'text', name: 'api_key',
-          placeholder: 'teamcity_user:teamcity_password' },
+      { type: 'text', name: 'project_url', placeholder: 'https://teamcity.example.com' },
+      { type: 'text', name: 'subdomain', placeholder: 'Build Configuration Id' },
+      { type: 'text', name: 'api_key', placeholder: 'teamcity_user:teamcity_password' },
     ]
   end
 
-  def execute _push_data
+  def execute(_push_data)
   end
 
   def can_test?
@@ -85,10 +82,8 @@ class TeamcityCiService < CiService
 
   def my_find_build_id_by_sha(sha, branch)
     user, password = api_key.split(':')
-    tc = TeamCity.client(endpoint: "#{project_url}/httpAuth/app/rest",
-                         http_user: user, http_password: password)
-    builds = tc.builds(buildType: subdomain, branch: branch,
-                       running: 'any', canceled: 'any')
+    tc = TeamCity.client(endpoint: "#{project_url}/httpAuth/app/rest", http_user: user, http_password: password)
+    builds = tc.builds(buildType: subdomain, branch: branch, running: 'any', canceled: 'any')
 
     return nil unless builds
 
