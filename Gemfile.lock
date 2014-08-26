@@ -129,10 +129,10 @@ GEM
     factory_girl_rails (4.3.0)
       factory_girl (~> 4.3.0)
       railties (>= 3.0.0)
-    faraday (0.8.9)
-      multipart-post (~> 1.2.0)
-    faraday_middleware (0.9.0)
-      faraday (>= 0.7.4, < 0.9)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.9.1)
+      faraday (>= 0.7.4, < 0.10)
     ffaker (1.22.1)
     ffi (1.9.3)
     fog (1.21.0)
@@ -289,7 +289,7 @@ GEM
     minitest (5.3.5)
     multi_json (1.10.1)
     multi_xml (0.5.5)
-    multipart-post (1.2.0)
+    multipart-post (2.0.0)
     mysql2 (0.3.16)
     net-ldap (0.3.1)
     net-scp (1.1.2)
@@ -506,10 +506,10 @@ GEM
     stamp (0.5.0)
     state_machine (1.2.0)
     stringex (2.5.1)
-    teamcity-ruby-client (1.2.0)
-      faraday (~> 0.8.5)
+    teamcity-ruby-client (1.3.1)
+      faraday (~> 0.9.0)
       faraday_middleware (~> 0.9.0)
-      hashie (~> 2.0.0)
+      hashie (>= 2.0)
     temple (0.6.7)
     term-ansicolor (1.2.2)
       tins (~> 0.8)
@@ -685,6 +685,7 @@ DEPENDENCIES
   spring-commands-spinach (= 1.0.0)
   stamp
   state_machine
+  teamcity-ruby-client
   test_after_commit
   therubyracer
   thin
