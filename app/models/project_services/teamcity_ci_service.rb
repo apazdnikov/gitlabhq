@@ -5,9 +5,6 @@
 require 'teamcity'
 
 class TeamcityCiService < CiService
-  attr_accessible :project_url
-  attr_accessible :subdomain
-
   validates :project_url, presence: true, if: :activated?
   validates :subdomain, presence: true, if: :activated?
   validates :api_key, presence: true, if: :activated?
