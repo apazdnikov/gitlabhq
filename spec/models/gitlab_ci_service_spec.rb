@@ -43,7 +43,7 @@ describe GitlabCiService do
     end
 
     describe :build_page do
-      it { @service.build_page("2ab7834c").should == "http://ci.gitlab.org/projects/2/builds/2ab7834c"}
+      it { @service.build_page("2ab7834c", "master").should == "http://ci.gitlab.org/projects/2/builds/2ab7834c"}
     end
   end
 end
