@@ -13,6 +13,7 @@ class ProjectServices < Spinach::FeatureSteps
     page.should have_content 'Hipchat'
     page.should have_content 'GitLab CI'
     page.should have_content 'Assembla'
+    page.should have_content 'Teamcity CI'
   end
 
   step 'I click gitlab-ci service link' do
@@ -117,5 +118,23 @@ class ProjectServices < Spinach::FeatureSteps
     find_field('Subdomain').value.should == 'gitlab'
     find_field('Room').value.should == '#gitlab'
     find_field('Token').value.should == 'verySecret'
+  end
+
+  step 'I click teamcity-ci service link' do
+    click_link 'Teamcity CI'
+  end
+
+  step 'I fill teamcity-ci settings' do
+    check 'Active'
+    fill_in 'Project url', with: 'http://teamcity.mydomain.com'
+    fill_in 'Subdomain', with: 'TestProjects_GitlabTest_TestIntegration'
+    fill_in 'Api key', with: 'teamcity_user:my_password'
+    click_button 'Save'
+  end
+
+  step 'I should see service settings saved' do
+    find_field('Project url').value.should == 'http://teamcity.mydomain.com'
+    find_field('Subdomain').value.should == TestProjects_GitlabTest_TestIntegration'
+    find_field('Api key').value.should == 'teamcity_user:my_password'
   end
 end
